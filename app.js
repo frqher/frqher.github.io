@@ -157,6 +157,9 @@ function checkTest(){
             u_dil_2 = 0
         }
 
+        e_cavab_goster.textContent = "Cavabı Göstər";
+        e_cavab_text.textContent = "Cavab:*****";
+
         e_div_cavab.classList.remove("d-none");
 
         Data.getLanguage(u_sinif, u_unit)
