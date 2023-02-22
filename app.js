@@ -74,7 +74,6 @@ function checkAnswer(){
 
 function startTest(){
     u_sual = getRandomSual();
-    console.log(u_sual);
 
     if (u_sual == -1){
         e_sual.textContent = "Bütün sualları düzgün cavabladın, mükemmelsen !";
@@ -124,7 +123,6 @@ function removeSual(number){
 function getRandomNumber(){
     let object_length = Object.getOwnPropertyNames(objects).length - 2
     
-    console.log("Obje sayi", object_length);
     let random_number = String(Math.floor(Math.random() * object_length));
    
     return random_number;
@@ -138,7 +136,7 @@ function checkTest(){
     let e_dil_v = e_dil.options[e_dil.selectedIndex].text;
 
     if (e_sinif_v == error_select || e_unit_v == error_select || e_dil_v == error_select){
-        console.log("Lutfen tum alanlari doldurunuz");
+        UI.errorMsg("category", "danger", "Sinif, Unit ve Dili seçin!");
     }
     else{
         u_sinif = e_sinif_v;
