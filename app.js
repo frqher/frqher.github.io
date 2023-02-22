@@ -25,6 +25,11 @@ function eventListeners(){
     e_baslat.addEventListener("click", checkTest);
     e_yoxla.addEventListener("click", checkAnswer);
     e_cavab_goster.addEventListener("click", showAnswer);
+    e_cavab.addEventListener("keydown", (event) => {
+        if (event.key == "Enter"){
+            checkAnswer();
+        }
+    });
 
 }
 
@@ -43,7 +48,8 @@ function showAnswer(e){
 }
 
 function correctAnswer(){
-    showAnswer(true)
+    UI.errorMsg("cavab-card-body", "success", "Düzgün Cavab!");
+    showAnswer(true);
     removeSual(u_index);
     startTest();
 }
