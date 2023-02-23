@@ -41,6 +41,15 @@
                     </select>
                 </div>
 
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="select_">Çətinlik</label>
+                    <select class="form-select" id="select_cetinlik">
+                      <!-- <option selected>Sec...</option> -->
+                      <option value="1 selected">Asan</option>
+                      <option value="2">Çətin</option>
+                    </select>
+                </div>
+
                 <button class="btn btn-primary" id="start">Başlat</button>
 
             </div>
@@ -53,13 +62,25 @@
         <div class="card text-center">
             <div class="card-header"></div>
             <div class="card-body" id="cavab-card-body">
-                <h5 class="card-title">Doğru cavabı yazın</h5>
+                <h5 class="card-title" id="kart_info">Doğru Cavabı Yazın</h5>
                 <p class="card-text" id="sual">Sual:</p>
                 <p class="card-text" id="sual_cavab">Cavab:*****</p>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control text-center" placeholder="Cavab" aria-label="Username" aria-describedby="basic-addon1" id="cavab">
                 </div>
-                <button class="btn btn-primary" id="check">Yoxla</button>
+                
+                <div class="div" id="zorluk_1">
+                    <button class="btn btn-primary d-none" id="check">Yoxla</button>
+                </div>
+
+                <div class="div d-none" id="zorluk_2">
+                    <button class="btn btn-primary variant">A</button>
+                    <button class="btn btn-primary variant">B</button>
+                    <button class="btn btn-primary variant">C</button>
+                    <button class="btn btn-primary variant">D</button>
+                    <button class="btn btn-primary variant">e</button>
+                </div>
+
             </div>
             <div class="card-footer">
                 <button class="btn btn-danger" id="show_answer">Cavabı Göstər</button>
