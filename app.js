@@ -59,7 +59,7 @@ function incorrectAnswer(){
 }
 
 function checkAnswer(){
-    let cevap = e_cavab.value.toLowerCase();
+    let cevap = e_cavab.value.toLowerCase().trim();
     let soru = u_sual[u_dil_2].split(",");
     let answer_durum = false;
 
