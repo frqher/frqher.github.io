@@ -25,7 +25,7 @@ let u_sual;
 let u_index;
 let u_cevap;
 let objects;
-let dark_state = false
+let dark_state = true
 
 eventListeners();
 
