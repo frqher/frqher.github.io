@@ -12,6 +12,7 @@ const e_card_info = document.getElementById("kart_info");
 const e_cavab = document.getElementById("cavab");
 const e_cavab_text = document.getElementById("sual_cavab");
 const e_cavab_goster = document.getElementById("show_answer");
+const e_cavab_durdur = document.getElementById("stop_system");
 const e_variantlar = document.querySelectorAll(".variant");
 
 let u_sinif;
@@ -29,6 +30,11 @@ eventListeners();
 function eventListeners(){
     
     e_baslat.addEventListener("click", checkTest);
+    e_cavab_durdur.addEventListener("click", () =>{
+        Timer.resetTimer();
+        UI.showCategory(true);
+    });
+
     e_yoxla.addEventListener("click", () => {
         if (u_cetinlik == 2){
             u_cevap = e_cavab.value.toLowerCase().trim();
@@ -137,19 +143,12 @@ function startTest(){
         });
 
         if(u_cetinlik == 1){
-            e_yoxla.classList.add("d-none");
-            e_cavab.classList.add("d-none");
-            e_div_zorluk.classList.remove("d-none");
-
             fake_suallar.forEach((element, index) => {
                 e_variantlar[index].textContent = element;
             });
         }
-        else{
-            e_yoxla.classList.remove("d-none");
-            e_cavab.classList.remove("d-none");
-            e_div_zorluk.classList.add("d-none");
-        }
+
+        UI.showMode(u_cetinlik)
         
     }
 
@@ -236,7 +235,7 @@ function checkTest(){
 
         setLanguage(e_dil_v)
         setDifficult(e_cetinlik)
-
+        
         u_sinif = e_sinif_v;
         u_unit = e_unit_v;
 
@@ -244,11 +243,16 @@ function checkTest(){
         e_cavab_text.textContent = "Cavab:*****";
 
         e_div_cavab.classList.remove("d-none");
-
+        
         Data.getLanguage(u_sinif, u_unit)
         .then(res => {
+
             objects = res;
+
             startTest();
+            Timer.startTimer();
+            UI.showCategory(false);
+            
         });
     }
 }
