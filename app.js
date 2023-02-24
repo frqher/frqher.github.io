@@ -37,7 +37,7 @@ function eventListeners(){
     });
     e_cavab_goster.addEventListener("click", showAnswer);
     e_div_zorluk.addEventListener("click", (e) => {
-        if (e.target.className == "btn btn-primary variant"){
+        if (e.target.className == "btn btn-primary variant m-1"){
             if (u_cetinlik == 1){
                 u_cevap = e.target.textContent.toLowerCase().trim();
                 checkAnswer();
