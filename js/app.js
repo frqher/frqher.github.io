@@ -161,7 +161,7 @@ function correctAnswer(){
 }
 
 function incorrectAnswer(){
-    UI.errorMsg("cavab-card-body", "danger", "Cavab düzgün deyil, Cavab: " + getAnswer());
+    UI.errorMsg("cavab-card-body", "danger", "Cavab düzgün deyil, Cavab: " + u_sual[u_dil_2]);
     e_cavab.value = ""
     UI.showAnswer(true);
     startTest();
