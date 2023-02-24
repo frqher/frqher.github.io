@@ -1,0 +1,31 @@
+.dark-mode{
+    background-color: rgb(13, 17, 23);
+    color: white ;
+    border-color: rgb(94, 94, 94);
+    transition-duration: 1s;
+}
+
+
+body.dark-mode{
+    background-color: rgb(13, 17, 23);
+    transition-duration: 1s;
+}
+
+div.dark-mode{
+    background-color: rgb(22, 27, 34);
+    transition-duration: 1s;
+}
+
+h1 h2 h3 h4 h5 div p.dark-mode{
+    color: rgb(255, 255, 255);
+    transition-duration: 1s;
+}
+
+input.dark-mode{
+    background-color: rgb(13, 17, 23);
+    color: white;
+    border-color: rgb(94, 94, 94);
+    transition-duration: 1s;
+}
+
+
