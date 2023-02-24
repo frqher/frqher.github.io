@@ -6,7 +6,6 @@ class UI{
 
         const cardBody = document.getElementById(id);;
     
-        // Alert divini olusturma
         const div = document.createElement("div");
     
         div.className = `alert alert-${type} mt-3`
@@ -30,6 +29,16 @@ class UI{
         }
     }
 
+    static visibleAnswer(status){
+        if(status){
+            e_div_cavab.classList.remove("d-none");
+        }
+        else{
+            e_div_cavab.classList.add("d-none");
+        }
+    }
+
+
     static showMode(status){
         if(status == 1){
             e_yoxla.classList.add("d-none");
@@ -42,6 +51,37 @@ class UI{
             e_div_zorluk.classList.add("d-none");
         }
         
+    }
+
+    static createOption(index){
+
+        const option = document.createElement("option");
+                    
+        option.value = index;
+        option.textContent = index;
+    
+        e_unit.appendChild(option);
+    }
+
+    static showAnswer(e){
+        let durum = e_cavab_goster.textContent;
+    
+        if (durum == "Cavabı Göstər" && e !== true){
+            e_cavab_text.textContent = "Cavab: " + u_sual[u_dil_2];
+            e_cavab_goster.textContent = "Cavabı Gösterme";
+            
+        }
+        else{
+            e_cavab_goster.textContent = "Cavabı Göstər";
+            e_cavab_text.textContent = "Cavab:*****";
+        }
+    }
+
+    static loadAnswer(){
+        e_cavab_goster.textContent = "Cavabı Göstər";
+        e_cavab_text.textContent = "Cavab:*****";
+
+        e_div_cavab.classList.remove("d-none");
     }
 
 }

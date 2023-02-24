@@ -28,12 +28,18 @@ let objects;
 eventListeners();
 
 function eventListeners(){
+
+    addEventListener("DOMContentLoaded", () =>{
+        Data.checkSinif(e_sinif);
+    })
+
+    e_sinif.addEventListener("click", () => {
+        Data.checkUnit(e_unit);
+    })
     
-    e_baslat.addEventListener("click", checkTest);
-    e_cavab_durdur.addEventListener("click", () =>{
-        Timer.resetTimer();
-        UI.showCategory(true);
-    });
+    e_baslat.addEventListener("click", setTest);
+
+    e_cavab_durdur.addEventListener("click", resetAll);
 
     e_yoxla.addEventListener("click", () => {
         if (u_cetinlik == 2){
@@ -41,7 +47,9 @@ function eventListeners(){
             checkAnswer();
         }
     });
-    e_cavab_goster.addEventListener("click", showAnswer);
+
+
+    e_cavab_goster.addEventListener("click", UI.showAnswer);
     e_div_zorluk.addEventListener("click", (e) => {
         if (e.target.className == "btn btn-primary variant m-1"){
             if (u_cetinlik == 1){
@@ -50,6 +58,7 @@ function eventListeners(){
             }
         }
     });
+
     e_cavab.addEventListener("keydown", (event) => {
         if (event.key == "Enter"){
 
@@ -64,29 +73,90 @@ function eventListeners(){
 }
 
 
-function showAnswer(e){
-    let durum = e_cavab_goster.textContent;
+function resetAll(){
+    Timer.resetTimer();
+    UI.visibleAnswer(false);
+    UI.showCategory(true);
+}
 
-    if (durum == "Cavabı Göstər" && e !== true){
-        e_cavab_text.textContent = "Cavab: " + u_sual[u_dil_2];
-        e_cavab_goster.textContent = "Cavabı Gösterme";
-        
+
+function konrolKategori(){
+    let error_select = "Seç...";
+    let e_sinif_v = e_sinif.options[e_sinif.selectedIndex].text;
+    let e_unit_v = e_unit.options[e_unit.selectedIndex].text;
+    let e_dil_v = e_dil.options[e_dil.selectedIndex].text;
+    let e_cetinlik = e_zorluk.options[e_zorluk.selectedIndex].text;
+
+    if (e_sinif_v == error_select || e_unit_v == error_select || e_dil_v == error_select || e_cetinlik == error_select){
+        UI.errorMsg("category", "danger", "Sinif, Unit, Dil ve Çətinlik səviyyəsini seçin!");
+        return false
     }
     else{
-        e_cavab_goster.textContent = "Cavabı Göstər";
-        e_cavab_text.textContent = "Cavab:*****";
+        return true
     }
+}
+
+
+function setTest(){
+
+    if (!konrolKategori()){
+        return
+    }
+
+    let e_sinif_v = e_sinif.options[e_sinif.selectedIndex].text;
+    let e_unit_v = e_unit.options[e_unit.selectedIndex].text;
+    let e_dil_v = e_dil.options[e_dil.selectedIndex].text;
+    let e_cetinlik = e_zorluk.options[e_zorluk.selectedIndex].text;
+
+    setLanguage(e_dil_v);
+    setDifficult(e_cetinlik);
+    setUnitAndSinif(e_sinif_v, e_unit_v);
+    UI.loadAnswer();
+
+    Data.getLanguage(u_sinif, u_unit)
+        .then(res => {
+
+            objects = res;
+
+            startTest();
+            Timer.startTimer();
+            UI.showCategory(false);
+            
+        });
+
+}
+
+function setUnitAndSinif(sinif, unit){
+    u_sinif = sinif;
+    u_unit = unit;
+}
+
+
+function setDifficult(zorluk){
+
+    if (zorluk == "Asan"){
+        u_cetinlik = 1
+        e_card_info.textContent = "Doğru Cavabı Seçin";
+    }
+    else if (zorluk == "Çətin"){
+        u_cetinlik = 2
+        e_card_info.textContent = "Doğru Cavabı Yazın";
+    }
+
 }
 
 function correctAnswer(){
     UI.errorMsg("cavab-card-body", "success", "Düzgün Cavab!");
-    showAnswer(true);
+    UI.showAnswer(true);
     removeSual(u_index);
     startTest();
 }
 
 function incorrectAnswer(){
-    UI.errorMsg("cavab-card-body", "danger", "Cavab düzgün deyil");
+    UI.errorMsg("cavab-card-body", "danger", "Cavab düzgün deyil, Cavab: " + getAnswer());
+    e_cavab.value = ""
+    UI.showAnswer(true);
+    startTest();
 }
 
 function getAnswer(answer){
@@ -112,25 +182,22 @@ function checkAnswer(){
     }
 }
 
-
 function startTest(){
     u_sual = getRandomSual();
-    let fake_suallar = getRandomFakeSual();
-    let real_sual_random_pos = Math.floor(Math.random() * 4);
-    let real_sual = u_sual[u_dil_2].split(",")[0];
-    fake_suallar.splice(real_sual_random_pos, 0, real_sual);
 
     if (u_sual == -1){
         e_sual.textContent = "Bütün sualları düzgün cavabladın, mükemmelsen !";
         e_div_cavab.classList.add("d-none");
         UI.errorMsg("category", "success", "Bütün sualları düzgün cavabladın, mükəmməlsən!");
+        resetAll();
     }
     else{
+
+        let fake_suallar = getRandomFakeSual();
 
         e_sual.textContent = "Sual: ";
 
         let soru_uzunluk = u_sual[u_dil].split(",").length - 1;
-        // e_variantlar[0].textContent
         
         u_sual[u_dil].split(",").forEach((element, index) => {
             
@@ -148,26 +215,12 @@ function startTest(){
             });
         }
 
-        UI.showMode(u_cetinlik)
+        UI.showMode(u_cetinlik);
         
     }
 
     
 
-}
-
-function getRandomSual(){
-    u_index = getRandomNumber();
-
-    if (u_index == "-1"){
-        return -1;
-    }
-    else{
-        let sual = objects[u_index];
-        return sual;
-    }
-    
-    
 }
 
 function getRandomFakeSual(){
@@ -178,6 +231,10 @@ function getRandomFakeSual(){
         fake_suallar.push(sual[0]);
     }
 
+    let real_sual_random_pos = Math.floor(Math.random() * 4);
+    let real_sual = u_sual[u_dil_2].split(",")[0];
+    fake_suallar.splice(real_sual_random_pos, 0, real_sual);
+
     return fake_suallar;
 }
 
@@ -187,11 +244,17 @@ function removeSual(number){
 }
 
 function getRandomNumber(){
-    let object_length = Object.getOwnPropertyNames(objects).length - 2
+    let object_length = Object.getOwnPropertyNames(objects).length - 1;
+
+    if (object_length == 0){
+        return -1
+    }
+    else{
+        let random_number = String(Math.floor(Math.random() * object_length));
     
-    let random_number = String(Math.floor(Math.random() * object_length));
-   
-    return random_number;
+        return random_number;
+    }
+ 
 }
 
 function setLanguage(dil){
@@ -207,52 +270,15 @@ function setLanguage(dil){
 
 }
 
-function setDifficult(zorluk){
+function getRandomSual(){
+    u_index = getRandomNumber();
 
-    if (zorluk == "Asan"){
-        u_cetinlik = 1
-        e_card_info.textContent = "Doğru Cavabı Seçin";
-    }
-    else if (zorluk == "Çətin"){
-        u_cetinlik = 2
-        e_card_info.textContent = "Doğru Cavabı Yazın";
-    }
-
-}
-
-function checkTest(){
-
-    let error_select = "Sec...";
-    let e_sinif_v = e_sinif.options[e_sinif.selectedIndex].text;
-    let e_unit_v = e_unit.options[e_unit.selectedIndex].text;
-    let e_dil_v = e_dil.options[e_dil.selectedIndex].text;
-    let e_cetinlik = e_zorluk.options[e_zorluk.selectedIndex].text;
-
-    if (e_sinif_v == error_select || e_unit_v == error_select || e_dil_v == error_select || e_cetinlik == error_select){
-        UI.errorMsg("category", "danger", "Sinif, Unit, Dil ve Çətinlik səviyyəsini seçin!");
+    if (u_index == "-1"){
+        return -1;
     }
     else{
-
-        setLanguage(e_dil_v)
-        setDifficult(e_cetinlik)
-        
-        u_sinif = e_sinif_v;
-        u_unit = e_unit_v;
-
-        e_cavab_goster.textContent = "Cavabı Göstər";
-        e_cavab_text.textContent = "Cavab:*****";
-
-        e_div_cavab.classList.remove("d-none");
-        
-        Data.getLanguage(u_sinif, u_unit)
-        .then(res => {
-
-            objects = res;
-
-            startTest();
-            Timer.startTimer();
-            UI.showCategory(false);
-            
-        });
+        let sual = objects[u_index];
+        return sual;
     }
+    
 }
