@@ -93,6 +93,8 @@ class UI{
 
     static darkMode(state){
 
+        Storage.setModeToStorage(state);
+
         if(state){
             e_body.classList.add("dark-mode");
 
@@ -164,6 +166,7 @@ class UI{
             }
         }
         else{
+
             e_body.classList.remove("dark-mode");
 
             for (let index = 0; index < e_all_h1.length; index++) {     

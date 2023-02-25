@@ -25,7 +25,7 @@ let u_sual;
 let u_index;
 let u_cevap;
 let objects;
-let dark_state = true
+let dark_state;
 
 eventListeners();
 
@@ -33,6 +33,8 @@ function eventListeners(){
 
     addEventListener("DOMContentLoaded", () =>{
         Data.checkSinif(e_sinif);
+        dark_state = Storage.getLocalStorage();
+        console.log(dark_state, "app");
         UI.darkMode(dark_state);
     });
 
