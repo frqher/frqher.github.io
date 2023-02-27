@@ -43,7 +43,7 @@ function eventListeners(){
         dark_state = !dark_state
     });
 
-    e_sinif.addEventListener("click", () => {
+    e_sinif.addEventListener("change", () => {
         Data.checkUnit(e_unit);
     });
     
